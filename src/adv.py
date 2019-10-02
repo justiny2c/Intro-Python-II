@@ -1,4 +1,5 @@
 from room import Room
+from player import Player
 
 # Declare all the rooms
 
@@ -39,13 +40,55 @@ room['treasure'].s_to = room['narrow']
 
 # Make a new player object that is currently in the 'outside' room.
 
+player = Player("Rushi", room["outside"])
+print(player)
+
 # Write a loop that:
-#
+
 # * Prints the current room name
+print(f"Current_Room: {player.current_room.name}")
 # * Prints the current description (the textwrap module might be useful here).
+print(f"Description: {player.current_room.description}")
 # * Waits for user input and decides what to do.
-#
+direction = input(
+    "Input n(north), e(east), s(south), w(west) to chose which direction to go...or q(quit): ")
+
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+
+
+def characterMove(direction):
+    if direction == "n":
+        if player.current_room.n_to is None:  # if player's current room has no room in north direction
+            print("Can't go North")
+        else:
+            player.current_room = player.current_room.n_to
+            print(player)
+
+    elif direction == "s":
+        if player.current_room.s_to is None:
+            print("Can't go South")
+        else:
+            player.current_room = player.current_room.s_to
+            print(player)
+
+    elif direction == "e":
+        if player.current_room.e_to is None:
+            print("Can't go East")
+        else:
+            player.current_room = player.current_room.e_to
+            print(player)
+
+    elif direction == "w":
+        if player.current_room.w_to is None:
+            print("Can't go West")
+        else:
+            player.current_room = player.current_room.w_to
+            print(player)
+    elif direction == "q":
+        print("You have exited the game")
+
+
+characterMove(direction)
