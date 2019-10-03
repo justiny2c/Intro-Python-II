@@ -1,5 +1,6 @@
 from room import Room
 from player import Player
+from items import Items
 
 # Declare all the rooms
 
@@ -22,6 +23,20 @@ chamber! Sadly, it has already been completely emptied by
 earlier adventurers. The only exit is to the south."""),
 }
 
+items = {
+    "weapon": Items("Lightsaber", "Luke Skywalker's saber"),
+    "armour": Items("Shield", "Captain America's shield"),
+    "phone": Items("iPhone", "Necessary for emergency calls"),
+    "shoes": Items("Vapormax's", "Nike Swoosh all day for running")
+}
+
+# add items to each room
+
+room['foyer'].addItems('weapon') 
+room['outside'].addItems('shield')
+room['overlook'].addItems('phone')
+room['narrow'].addItems('shoes')
+room['treasure'].addItems('weapon')
 
 # Link rooms together
 
@@ -34,28 +49,33 @@ room['narrow'].w_to = room['foyer']
 room['narrow'].n_to = room['treasure']
 room['treasure'].s_to = room['narrow']
 
-#
+
 # Main
-#
 
 # Make a new player object that is currently in the 'outside' room.
 
 player = Player("Rushi", room["outside"])
-print(player)
+# print(player)
 
 # Write a loop that:
 
-# * Prints the current room name
-print(f"Current_Room: {player.current_room.name}")
-# * Prints the current description (the textwrap module might be useful here).
+print(f"{player.name} is in Current_Room: {player.current_room.name}")
 print(f"Description: {player.current_room.description}")
+print(f"Items: {player.current_room.itemsList}")
+
 # * Waits for user input and decides what to do.
-
-
 while True:
+    itemDrop = input(
+        "Do you want to drop an item from your inventory? No(0), First(1), Second(2), Third(3)...etc: ")
+    player.drop(int(itemDrop)-1)
+    item = input(
+        "Do you want to take an item? No(0), First(1) or Second(2)...: ")
+    player.take(int(item)-1)
     direction = input(
         "Input n(north), e(east), s(south), w(west) to chose which direction to go...or q(quit): ")
     player.move(direction)
+
+
 # If the user enters a cardinal direction, attempt to move to the room there.
 # Print an error message if the movement isn't allowed.
 #
